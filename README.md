@@ -61,10 +61,8 @@ A comprehensive web application for statistical analysis of precipitation data, 
 1. **Input Data Bar Chart** - View your rainfall data
 2. **Frequency Histogram** - Distribution of rainfall values
 3. **Return Period Curves** - Compare all distribution methods
-4. **Probability Plots** - Assess theoretical vs observed fit
-5. **IDF Curves** - Intensity-Duration-Frequency relationships
-6. **Q-Q Plots** - Quantile-quantile comparison
-7. **Statistical Coefficients Chart** - Cv, Cs, Ck visualization
+4. **IDF Curves** - Intensity-Duration-Frequency relationships
+5. **Statistical Coefficients Chart** - Cv, Cs, Ck visualization
 
 ### 📋 Results Tables
 - Summary statistics (N, mean, SD, Cv, Cs, Ck)
@@ -212,3 +210,4 @@ For issues or questions about hydrological methods, refer to standard textbooks 
 **Version:** 1.0.0  
 **Last Updated:** November 2025  
 **Built for:** Civil & Water Resources Engineers
+
