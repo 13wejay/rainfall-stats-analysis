@@ -1,0 +1,250 @@
+/**
+ * QUICK REFERENCE GUIDE
+ * Statistical Formulas and Parameters Used in the Application
+ */
+
+// ============================================================================
+// 1. BASIC STATISTICS
+// ============================================================================
+
+Mean (X̄) = Σ(Xi) / n
+
+Standard Deviation (SD) = √[Σ(Xi - X̄)² / (n-1)]
+
+Coefficient of Variation (Cv) = SD / X̄
+
+Coefficient of Skewness (Cs) = n × Σ(Xi - X̄)³ / [(n-1)(n-2) × SD³]
+
+Coefficient of Kurtosis (Ck) = [n(n+1) × Σ(Xi - X̄)⁴] / [(n-1)(n-2)(n-3) × SD⁴] - [3(n-1)²] / [(n-2)(n-3)]
+
+// ============================================================================
+// 2. FREQUENCY DISTRIBUTION METHODS
+// ============================================================================
+
+// NORMAL DISTRIBUTION
+// -------------------
+XT = X̄ + K × SD
+
+// Frequency Factor (K) for Common Return Periods:
+// T=2: K=0.0, T=5: K=0.842, T=10: K=1.282
+// T=25: K=1.751, T=50: K=2.054, T=100: K=2.326
+
+
+// GUMBEL DISTRIBUTION (Extreme Value Type I)
+// -------------------------------------------
+XT = X̄ + K × SD
+K = (YT - Yn) / Sn
+YT = -ln(-ln(1 - 1/T))  // Reduced variate
+
+// Gumbel Parameters (Yn and Sn) by Sample Size:
+// n=10: Yn=0.4952, Sn=0.9496
+// n=20: Yn=0.5236, Sn=1.0628
+// n=30: Yn=0.5362, Sn=1.1124
+// n=50: Yn=0.5485, Sn=1.1607
+// n=100: Yn=0.5600, Sn=1.2065
+
+
+// LOG-NORMAL DISTRIBUTION
+// -----------------------
+// Step 1: Transform to log space
+Yi = log10(Xi)
+
+// Step 2: Calculate statistics in log space
+log X̄ = Σ(Yi) / n
+SD(log X) = √[Σ(Yi - log X̄)² / (n-1)]
+
+// Step 3: Calculate design value
+log XT = log X̄ + K × SD(log X)
+
+// Step 4: Back-transform
+XT = 10^(log XT)
+
+
+// LOG-PEARSON TYPE III
+// --------------------
+// Step 1: Transform to log space
+Yi = log10(Xi)
+
+// Step 2: Calculate log statistics including skewness
+log X̄ = Σ(Yi) / n
+SD(log X) = √[Σ(Yi - log X̄)² / (n-1)]
+Cs = n × Σ(Yi - log X̄)³ / [(n-1)(n-2) × SD(log X)³]
+
+// Step 3: Get KT from tables based on Cs and T
+log XT = log X̄ + KT × SD(log X)
+
+// Step 4: Back-transform
+XT = 10^(log XT)
+
+// Log-Pearson KT values (examples):
+// For Cs=0.0: Same as normal distribution K values
+// For Cs>0: Positive skewness, KT adjusts accordingly
+// For Cs<0: Negative skewness, KT adjusts accordingly
+
+// ============================================================================
+// 3. MONONOBE FORMULA
+// ============================================================================
+
+// Short-Duration Rainfall Intensity from 24-hour Rainfall
+I = (R24 / 24) × (24 / t)^(2/3)
+
+// Where:
+// I = rainfall intensity (mm/hr)
+// R24 = 24-hour design rainfall (mm)
+// t = duration (hours)
+
+// Example for R24=150mm, t=1hr:
+// I = (150/24) × (24/1)^(2/3) = 6.25 × 8.73 = 54.56 mm/hr
+
+// ============================================================================
+// 4. GOODNESS OF FIT TESTS
+// ============================================================================
+
+// CHI-SQUARE TEST
+// ---------------
+χ² = Σ[(Oi - Ei)² / Ei]
+
+// Decision Rule:
+// If χ² < χ²critical (α=0.05): Accept H0 (good fit)
+// If χ² ≥ χ²critical (α=0.05): Reject H0 (poor fit)
+
+// Degrees of Freedom = Number of classes - Number of parameters - 1
+
+// Critical Values at α=0.05:
+// df=1: 3.841, df=2: 5.991, df=3: 7.815
+// df=5: 11.070, df=10: 18.307
+
+
+// KOLMOGOROV-SMIRNOV TEST
+// -----------------------
+Δmax = max|F(x) - Fo(x)|
+
+// Where:
+// F(x) = Theoretical cumulative distribution
+// Fo(x) = Empirical cumulative distribution = m/(n+1)
+// m = rank of observation (sorted ascending)
+
+// Critical Value at α=0.05:
+Δcr = 1.36 / √n
+
+// Decision Rule:
+// If Δmax < Δcr: Accept H0 (good fit)
+// If Δmax ≥ Δcr: Reject H0 (poor fit)
+
+// ============================================================================
+// 5. RETURN PERIOD AND PROBABILITY
+// ============================================================================
+
+// Return Period (T) = 1 / Exceedance Probability (P)
+
+// Common Return Periods and Probabilities:
+// T=2 years: P=0.50 (50% annual chance)
+// T=5 years: P=0.20 (20% annual chance)
+// T=10 years: P=0.10 (10% annual chance)
+// T=25 years: P=0.04 (4% annual chance)
+// T=50 years: P=0.02 (2% annual chance)
+// T=100 years: P=0.01 (1% annual chance)
+
+// Risk of exceedance in n years:
+// Risk = 1 - (1 - 1/T)^n
+
+// Examples:
+// Risk of 100-year event in 50 years: 1 - (1 - 0.01)^50 = 39.5%
+// Risk of 50-year event in 25 years: 1 - (1 - 0.02)^25 = 39.6%
+
+// ============================================================================
+// 6. SAMPLE SIZE REQUIREMENTS
+// ============================================================================
+
+// Minimum sample sizes for reliable analysis:
+// Normal Distribution: n ≥ 10 (preferably n ≥ 30)
+// Gumbel Distribution: n ≥ 15 (preferably n ≥ 30)
+// Log-Normal: n ≥ 15 (preferably n ≥ 25)
+// Log-Pearson Type III: n ≥ 25 (preferably n ≥ 50)
+
+// Note: Larger sample sizes provide more reliable estimates,
+// especially for extreme return periods (T ≥ 50 years)
+
+// ============================================================================
+// 7. PLOTTING POSITIONS
+// ============================================================================
+
+// Weibull Formula (used for plotting observed data):
+// P(X ≥ Xi) = m / (n + 1)
+
+// Where:
+// m = rank of observation (sorted descending, largest = 1)
+// n = sample size
+
+// Return Period: T = 1 / P = (n + 1) / m
+
+// ============================================================================
+// 8. INTERPRETATION GUIDELINES
+// ============================================================================
+
+/**
+ * Coefficient of Variation (Cv):
+ * - Cv < 0.2: Low variability
+ * - 0.2 ≤ Cv ≤ 0.4: Moderate variability
+ * - Cv > 0.4: High variability
+ * 
+ * Coefficient of Skewness (Cs):
+ * - Cs = 0: Symmetric distribution (normal)
+ * - Cs > 0: Positive skewness (right tail)
+ * - Cs < 0: Negative skewness (left tail)
+ * - |Cs| < 0.5: Approximately symmetric
+ * - 0.5 ≤ |Cs| ≤ 1.0: Moderately skewed
+ * - |Cs| > 1.0: Highly skewed
+ * 
+ * Distribution Selection:
+ * - Cs near 0, Cv < 0.3: Normal or Log-Normal
+ * - Cs > 0.5: Log-Pearson Type III
+ * - Extreme values (maxima): Gumbel Distribution
+ * - Always verify with goodness of fit tests
+ */
+
+// ============================================================================
+// 9. DESIGN RAINFALL APPLICATION
+// ============================================================================
+
+/**
+ * Urban Drainage Design:
+ * - Use shorter return periods (T=2-10 years)
+ * - Consider IDF curves for different durations
+ * 
+ * Highway Culverts:
+ * - T=10-25 years for rural roads
+ * - T=25-50 years for major highways
+ * 
+ * Dams and Critical Infrastructure:
+ * - T=100-1000 years (PMF for spillways)
+ * 
+ * Flood Plain Mapping:
+ * - T=100 years (FEMA standard)
+ * 
+ * Building Codes:
+ * - T=50 years for structural design
+ */
+
+// ============================================================================
+// 10. REFERENCES
+// ============================================================================
+
+/**
+ * Standard References:
+ * 
+ * 1. Chow, V.T., Maidment, D.R., and Mays, L.W. (1988)
+ *    Applied Hydrology, McGraw-Hill
+ * 
+ * 2. USGS Bulletin 17B (1982) / 17C (2017)
+ *    Guidelines for Determining Flood Flow Frequency
+ * 
+ * 3. World Meteorological Organization (WMO-168)
+ *    Guide to Hydrological Practices
+ * 
+ * 4. Haan, C.T. (2002)
+ *    Statistical Methods in Hydrology, Iowa State Press
+ * 
+ * 5. Rao, A.R. and Hamed, K.H. (2000)
+ *    Flood Frequency Analysis, CRC Press
+ */
