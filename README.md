@@ -1,4 +1,4 @@
-# Precipitation Analysis System
+# Precipitation Stats Analysis
 
 A comprehensive web application for statistical analysis of precipitation data, built with React and designed for civil and water resources engineers.
 
@@ -207,7 +207,8 @@ For issues or questions about hydrological methods, refer to standard textbooks 
 
 ---
 
-**Version:** 1.0.0  
+**Version:** 1.1.0  
 **Last Updated:** November 2025  
 **Built for:** Civil & Water Resources Engineers
+
 
